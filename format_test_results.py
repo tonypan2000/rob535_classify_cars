@@ -2,7 +2,15 @@ from glob import glob
 import os
 
 
-prediction_files = glob(os.path.join('./', 'exp4', 'labels', '*.txt'))
+class_to_idx = {'Unknown': 0, 'Compacts': 1, 'Sedans': 2, 'SUVs': 3, 'Coupes': 4,
+                'Muscle': 5, 'SportsClassics': 6, 'Sports': 7, 'Super': 8, 'Motorcycles': 9, 'OffRoad': 10,
+                'Industrial': 11, 'Utility': 12, 'Vans': 13, 'Cycles': 14, 'Boats': 15,
+                'Helicopters': 16, 'Planes': 17, 'Service': 18, 'Emergency': 19, 'Military': 20,
+                'Commercial': 21, 'Trains': 22
+                }
+idx_to_class = {i: c for c, i in class_to_idx.items()}
+
+prediction_files = glob(os.path.join('./', 'exp3', 'labels', '*.txt'))
 original_files = glob(os.path.join('./', 'test', '*/*_image.jpg'))
 with open(os.path.join('./', 'team20.csv'), 'w') as out:
     out.write('guid/image,label\n')
@@ -21,7 +29,7 @@ with open(os.path.join('./', 'team20.csv'), 'w') as out:
         if os.path.basename(prediction_filename).split('.')[0] == img_name.split('.')[0]:
             guid, image, _ = os.path.basename(prediction_filename).split('_')
             with open(prediction_filename, 'r') as input:
-                class_id = int(input.readline().split()[0])
+                class_id = class_to_idx[input.readline().split()[0]]
                 label = str(0)
                 if class_id > 0 and class_id < 9:
                     label = str(1)
