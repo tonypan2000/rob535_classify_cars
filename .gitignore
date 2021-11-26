@@ -3,3 +3,4 @@ cars/
 test/
 train/
 trainval
+exp*
